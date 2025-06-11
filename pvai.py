@@ -1,5 +1,4 @@
 import sys
-import time
 import yaml
 import argparse
 
@@ -113,110 +112,11 @@ def pvai(api, args, chunk_size=4096):
             sys.stderr.write(f'{ai_response}')
             sys.stderr.flush()
 
-# def pv_equivalent(chunk_size=4096):
-#     """
-#     Reads from stdin, writes to stdout, and displays data flow rate to stderr.
-#     """
-#     total_bytes_read = 0
-#     start_time = time.time()
-#     last_update_time = start_time
-#     bytes_since_last_update = 0
-
-#     # Ensure stderr is flushed immediately for real-time updates
-#     sys.stderr.write("Starting data transfer...\n")
-#     sys.stderr.flush()
-
-#     try:
-#         while True:
-#             # Read a chunk of data from stdin
-#             # For binary data, use sys.stdin.buffer.read()
-#             # For text data, use sys.stdin.read(chunk_size) or sys.stdin.buffer.read()
-#             # We'll use buffer for general purpose (handles binary and text bytes)
-#             chunk = sys.stdin.buffer.read(chunk_size)
-
-#             if not chunk:
-#                 # End of input (EOF) reached
-#                 break
-
-#             # Write the chunk to stdout
-#             # For binary data, use sys.stdout.buffer.write()
-#             # For text data, use sys.stdout.write()
-#             sys.stdout.buffer.write(chunk)
-#             sys.stdout.buffer.flush() # Ensure data is immediately written
-
-#             bytes_read_in_chunk = len(chunk)
-#             total_bytes_read += bytes_read_in_chunk
-#             bytes_since_last_update += bytes_read_in_chunk
-
-#             current_time = time.time()
-#             elapsed_total = current_time - start_time
-#             elapsed_since_last_update = current_time - last_update_time
-
-#             # Update progress every 0.5 seconds or if a significant amount of data has passed
-#             if elapsed_since_last_update >= 0.5:
-#                 # Calculate throughput for the last interval
-#                 if elapsed_since_last_update > 0:
-#                     current_rate = bytes_since_last_update / elapsed_since_last_update
-#                     rate_str = format_bytes_per_second(current_rate)
-#                 else:
-#                     rate_str = "0 B/s"
-
-#                 # Clear the line and print new progress to stderr
-#                 # \r moves cursor to the beginning of the line
-#                 # \033[K clears from cursor to end of line
-#                 sys.stderr.write(f"\r{format_bytes(total_bytes_read)} [{rate_str}] (Elapsed: {format_time(elapsed_total)}){' ' * 10}\033[K")
-#                 sys.stderr.flush()
-
-#                 last_update_time = current_time
-#                 bytes_since_last_update = 0
-
-#     except KeyboardInterrupt:
-#         sys.stderr.write("\nTransfer interrupted by user.\n")
-#     finally:
-#         # Final update and newline for clean output
-#         final_time = time.time()
-#         final_elapsed = final_time - start_time
-#         final_rate = total_bytes_read / final_elapsed if final_elapsed > 0 else 0
-#         sys.stderr.write(f"\r{format_bytes(total_bytes_read)} [{format_bytes_per_second(final_rate)}] (Elapsed: {format_time(final_elapsed)}) Complete.\n")
-#         sys.stderr.flush()
-
-# def format_bytes(bytes_count):
-#     """Formats bytes into human-readable string (e.g., 1.2 MB)."""
-#     if bytes_count < 1024:
-#         return f"{bytes_count} B"
-#     elif bytes_count < 1024**2:
-#         return f"{bytes_count / 1024:.1f} KB"
-#     elif bytes_count < 1024**3:
-#         return f"{bytes_count / (1024**2):.1f} MB"
-#     elif bytes_count < 1024**4:
-#         return f"{bytes_count / (1024**3):.1f} GB"
-#     else:
-#         return f"{bytes_count / (1024**4):.1f} TB"
-
-# def format_bytes_per_second(rate):
-#     """Formats bytes/second into human-readable string (e.g., 1.2 MB/s)."""
-#     return f"{format_bytes(rate)}/s"
-
-# def format_time(seconds):
-#     """Formats seconds into Hh Mm Ss string."""
-#     seconds = int(seconds)
-#     hours = seconds // 3600
-#     minutes = (seconds % 3600) // 60
-#     remaining_seconds = seconds % 60
-#     parts = []
-#     if hours > 0:
-#         parts.append(f"{hours}h")
-#     if minutes > 0 or hours > 0: # include minutes if hours are present or minutes are > 0
-#         parts.append(f"{minutes}m")
-#     parts.append(f"{remaining_seconds}s")
-#     return " ".join(parts) if parts else "0s"
-
-
 def parse_args():
     parser = argparse.ArgumentParser(
         __file__, description="""
-            This Python script mimics pv Linux utility in term of reading from stdin, and writing to stdout. 
-            But it uses stderr to print AI thoughts on data through pipe instead of monitor the progress.
+            This Python script mimics pv Linux utility in terms of reading from stdin, and writing to stdout. 
+            But it uses stderr to print AI thoughts on data going through pipe instead of monitoring the progress.
             """
     )
     parser.add_argument(
